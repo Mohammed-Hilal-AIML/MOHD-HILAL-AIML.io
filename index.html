@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mohammed Hilal — AI & ML Engineer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #0a0a0a;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f0f0; }
+    ::-webkit-scrollbar-thumb { background: #c0c0c0; border-radius: 8px; }
+    ::-webkit-scrollbar-thumb:hover { background: #888; }
+
+    .grain::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .perspective-container { perspective: 1200px; }
+    .card-3d {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+      transform-style: preserve-3d;
+    }
+
+    .link-underline {
+      position: relative;
+      display: inline-block;
+    }
+    .link-underline::after {
+      content: "";
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 100%; height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .link-underline:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .vertical-text {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .float-slow { animation: floatSlow 7s ease-in-out infinite; }
+
+    .grid-bg {
+      background-image: 
+        linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee { animation: marquee 35s linear infinite; }
+
+    .cursor-dot {
+      width: 8px; height: 8px;
+      background: #0a0a0a;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+      mix-blend-mode: difference;
+    }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: #0a0a0a;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    .display-text {
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      line-height: 0.92;
+    }
+
+    .grayscale-img {
+      filter: grayscale(100%) contrast(1.05);
+      transition: filter 1s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .grayscale-img:hover {
+      filter: grayscale(0%) contrast(1);
+      transform: scale(1.02);
+    }
+
+    .section-fade {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-white text-black antialiased overflow-x-hidden selection:bg-black selection:text-white grain">
+
+  <div class="cursor-dot hidden md:block" id="cursorDot"></div>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-white/80 backdrop-blur-md border-b border-black/5">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10 py-5 flex justify-between items-center">
+      
+      <a href="#home" class="flex items-center gap-2 group">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="group-hover:rotate-90 transition-transform duration-700">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="black" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="text-lg font-medium tracking-tight">Mohammed<span class="text-gray-400">.</span></span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-10">
+        <a href="#about" class="nav-link text-sm font-medium text-gray-700 hover:text-black transition-colors">About Me</a>
+        <a href="#projects" class="nav-link text-sm font-medium text-gray-700 hover:text-black transition-colors">Portfolio</a>
+        <a href="#skills" class="nav-link text-sm font-medium text-gray-700 hover:text-black transition-colors">Skills</a>
+        <a href="#experience" class="nav-link text-sm font-medium text-gray-700 hover:text-black transition-colors">Experience</a>
+      </div>
+
+      <div class="hidden md:block">
+        <a href="https://github.com/Mohdhilal7" target="_blank" rel="noopener" class="group flex items-center gap-2 text-sm font-medium border border-black/15 px-5 py-2.5 rounded-full hover:bg-black hover:text-white transition-all duration-300">
+          GitHub
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <button id="menu-btn" class="md:hidden p-2">
+        <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="black">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-black/10">
+      <div class="flex flex-col p-6 space-y-5">
+        <a href="#about" class="text-gray-700 hover:text-black text-sm font-medium">About Me</a>
+        <a href="#projects" class="text-gray-700 hover:text-black text-sm font-medium">Portfolio</a>
+        <a href="#skills" class="text-gray-700 hover:text-black text-sm font-medium">Skills</a>
+        <a href="#experience" class="text-gray-700 hover:text-black text-sm font-medium">Experience</a>
+        <a href="https://github.com/Mohdhilal7" target="_blank" rel="noopener" class="border border-black/15 px-5 py-2.5 rounded-full text-sm font-medium text-center hover:bg-black hover:text-white transition-all">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header id="home" class="relative min-h-screen flex flex-col justify-center pt-32 pb-20 px-6 lg:px-10 max-w-[1400px] mx-auto overflow-hidden grid-bg">
+    
+    <div class="hidden lg:block absolute left-6 top-1/2 -translate-y-1/2">
+      <span class="vertical-text text-xs tracking-[0.3em] text-gray-400 uppercase font-medium">AI & ML Engineer</span>
+    </div>
+
+    <div class="hidden lg:block absolute right-6 top-1/2 -translate-y-1/2">
+      <span class="vertical-text text-xs tracking-[0.3em] text-gray-400 uppercase font-medium">2026 Portfolio</span>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-8 items-center">
+      
+      <div class="lg:col-span-6 xl:col-span-6 z-10">
+        
+        <div class="flex gap-12 mb-14 reveal">
+          <div>
+            <div class="text-4xl md:text-5xl font-light tracking-tight">+7</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider mt-2">Projects built</div>
+          </div>
+          <div>
+            <div class="text-4xl md:text-5xl font-light tracking-tight">+2</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider mt-2">Internships done</div>
+          </div>
+        </div>
+
+        <h1 class="display-text text-[5.5rem] md:text-[8rem] lg:text-[9rem] xl:text-[10rem] leading-[0.85] mb-6 reveal">
+          Hello
+        </h1>
+
+        <p class="text-lg md:text-xl text-gray-600 font-light mb-12 max-w-md reveal">
+          — It's <span class="font-medium text-black">Mohammed Hilal</span>, an AI & ML engineer turning data into working products.
+        </p>
+
+        <div class="flex items-center gap-4 reveal">
+          <div class="w-12 h-[1px] bg-black"></div>
+          <span class="text-xs uppercase tracking-widest text-gray-500">Scroll down</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="float-slow">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 xl:col-span-6 relative flex justify-center lg:justify-end reveal">
+        <div class="relative w-full max-w-md lg:max-w-lg">
+          <div class="absolute -inset-4 border border-black/10 rounded-sm"></div>
+          
+          <div class="relative overflow-hidden rounded-sm perspective-container">
+            <img 
+              src="https://i.postimg.cc/fW8Gt3jv/Pic.jpg" 
+              alt="Mohammed Hilal — AI & ML Engineer" 
+              class="w-full h-auto object-cover grayscale-img card-3d"
+              style="aspect-ratio: 4/5; object-position: center top;"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none"></div>
+          </div>
+
+          <div class="absolute -bottom-4 -left-4 bg-white border border-black/10 px-5 py-3 rounded-sm shadow-sm float-slow">
+            <div class="text-xs text-gray-500 uppercase tracking-wider">Based in</div>
+            <div class="text-sm font-medium">Hyderabad, India</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-24 w-full overflow-hidden border-t border-b border-black/10 py-5">
+      <div class="flex w-max animate-marquee">
+        <div class="flex items-center gap-16 px-8">
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">Python</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">TensorFlow</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">PyTorch</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">LangChain</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">Streamlit</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">NLP</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">Scikit-learn</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">SQL</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">Python</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">TensorFlow</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">PyTorch</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">LangChain</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">Streamlit</span>
+          <span class="text-gray-300">◆</span>
+          <span class="text-sm text-gray-500 uppercase tracking-widest whitespace-nowrap">NLP</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+    <!-- ============ ABOUT ============ -->
+  <section id="about" class="py-32 px-6 lg:px-10 max-w-[1400px] mx-auto">
+    <div class="grid lg:grid-cols-12 gap-16 items-start">
+      
+      <div class="lg:col-span-3 section-fade">
+        <div class="sticky top-32">
+          <div class="text-xs uppercase tracking-widest text-gray-400 mb-3">01 / About</div>
+          <div class="w-12 h-[1px] bg-black"></div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 section-fade">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] mb-12 max-w-4xl">
+          I'm a <span class="font-medium">CSE (AI & ML) graduate</span>, class of 2026 — focused on turning data into working products.
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-12 mt-16">
+          <div>
+            <p class="text-gray-600 leading-relaxed mb-6">
+              My technical focus is on training and deploying predictive models, NLP pipelines and Generative AI tools — rather than just building them as notebooks.
+            </p>
+            <p class="text-gray-600 leading-relaxed">
+              Across two AI/ML internships at CODTECH IT Solutions, I built and shipped a content-based recommendation system, a CNN for image classification, a text summarization tool, and Generative AI experiments including Neural Style Transfer — deploying several as interactive Streamlit apps.
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-600 leading-relaxed mb-8">
+              I'm seeking an entry-level role as a <span class="font-medium text-black">Machine Learning Engineer</span> or <span class="font-medium text-black">Data Scientist</span>, where I can keep building models that hold up outside the notebook.
+            </p>
+
+            <div class="space-y-6">
+              <div class="border-l-2 border-black pl-6">
+                <div class="text-xs font-mono text-gray-400 mb-1">2022 — 2026</div>
+                <h4 class="font-medium text-sm leading-snug">Nawab Shah Alam Khan College of Engineering & Technology</h4>
+                <p class="text-gray-500 text-xs mt-1">B.E. CSE (AI & ML) · CGPA 7.74/10</p>
+              </div>
+              <div class="border-l-2 border-gray-300 pl-6">
+                <div class="text-xs font-mono text-gray-400 mb-1">2022</div>
+                <h4 class="font-medium text-sm leading-snug">Sri Gayatri Junior College, Hyderabad</h4>
+                <p class="text-gray-500 text-xs mt-1">Intermediate (MPC) · 829/1000</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills" class="py-32 px-6 lg:px-10 max-w-[1400px] mx-auto border-t border-black/5">
+    <div class="grid lg:grid-cols-12 gap-16 items-start">
+      
+      <div class="lg:col-span-3 section-fade">
+        <div class="sticky top-32">
+          <div class="text-xs uppercase tracking-widest text-gray-400 mb-3">02 / Skills</div>
+          <div class="w-12 h-[1px] bg-black"></div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 section-fade">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] mb-16 max-w-3xl">
+          Skills & <span class="font-medium">Technologies</span>
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-x-16 gap-y-12" id="skills-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects" class="py-32 px-6 lg:px-10 max-w-[1400px] mx-auto border-t border-black/5">
+    <div class="grid lg:grid-cols-12 gap-16 items-start">
+      
+      <div class="lg:col-span-3 section-fade">
+        <div class="sticky top-32">
+          <div class="text-xs uppercase tracking-widest text-gray-400 mb-3">03 / Portfolio</div>
+          <div class="w-12 h-[1px] bg-black"></div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 section-fade">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] mb-6 max-w-3xl">
+          Featured <span class="font-medium">Projects</span>
+        </h2>
+        <p class="text-gray-500 text-sm mb-16 max-w-xl">End-to-end builds spanning ML, computer vision, NLP and Generative AI. Click any project to view the code on GitHub.</p>
+
+        <div class="space-y-0" id="projects-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience" class="py-32 px-6 lg:px-10 max-w-[1400px] mx-auto border-t border-black/5">
+    <div class="grid lg:grid-cols-12 gap-16 items-start">
+      
+      <div class="lg:col-span-3 section-fade">
+        <div class="sticky top-32">
+          <div class="text-xs uppercase tracking-widest text-gray-400 mb-3">04 / Career</div>
+          <div class="w-12 h-[1px] bg-black"></div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-9 section-fade">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] mb-16 max-w-3xl">
+          Professional <span class="font-medium">Experience</span>
+        </h2>
+
+        <div class="space-y-16" id="experience-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA / CONTACT ============ -->
+  <section id="contact" class="py-32 px-6 lg:px-10 max-w-[1400px] mx-auto border-t border-black/5">
+    <div class="text-center section-fade">
+      <div class="text-xs uppercase tracking-widest text-gray-400 mb-6">05 / Contact</div>
+      <h2 class="text-5xl md:text-7xl lg:text-8xl font-light tracking-tight leading-[0.95] mb-12">
+        Let's build<br>
+        something <span class="font-medium italic">great</span>.
+      </h2>
+      <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-20">
+        <a href="https://github.com/Mohdhilal7" target="_blank" rel="noopener" class="group bg-black text-white text-sm font-medium px-8 py-4 rounded-full hover:bg-gray-800 transition-all duration-300 flex items-center gap-2">
+          Visit GitHub
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="mailto:mohdhilal782@gmail.com" class="text-sm font-medium border border-black/15 px-8 py-4 rounded-full hover:bg-black hover:text-white transition-all duration-300">
+          Email Me
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto text-left border-t border-black/10 pt-12">
+        <div>
+          <h4 class="text-xs uppercase tracking-widest text-gray-400 mb-4">Connect</h4>
+          <ul class="space-y-3">
+            <li><a href="https://www.linkedin.com/in/mohammed-hilal-301285338/" target="_blank" rel="noopener" class="text-sm text-gray-600 hover:text-black transition-colors link-underline">LinkedIn</a></li>
+            <li><a href="https://github.com/Mohdhilal7" target="_blank" rel="noopener" class="text-sm text-gray-600 hover:text-black transition-colors link-underline">GitHub</a></li>
+            <li><a href="mailto:mohdhilal782@gmail.com" class="text-sm text-gray-600 hover:text-black transition-colors link-underline">Email</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase tracking-widest text-gray-400 mb-4">Navigate</h4>
+          <ul class="space-y-3">
+            <li><a href="#about" class="text-sm text-gray-600 hover:text-black transition-colors link-underline">About</a></li>
+            <li><a href="#skills" class="text-sm text-gray-600 hover:text-black transition-colors link-underline">Skills</a></li>
+            <li><a href="#projects" class="text-sm text-gray-600 hover:text-black transition-colors link-underline">Projects</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase tracking-widest text-gray-400 mb-4">Location</h4>
+          <p class="text-sm text-gray-600">Hyderabad, India</p>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase tracking-widest text-gray-400 mb-4">Status</h4>
+          <p class="text-sm text-gray-600">Available for hire · Graduate 2026</p>
+      </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-400 border-t border-black/10 pt-8 mt-16">
+        <span>© 2026 Mohammed Hilal. All rights reserved.</span>
+        <span>Designed with care · Built with intention</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const cursorDot = document.getElementById('cursorDot');
+    if (cursorDot) {
+      document.addEventListener('mousemove', (e) => {
+        cursorDot.style.left = e.clientX - 4 + 'px';
+        cursorDot.style.top = e.clientY - 4 + 'px';
+      });
+    }
+
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    let isOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      isOpen = !isOpen;
+      mobileMenu.classList.toggle('hidden');
+      menuIcon.innerHTML = isOpen 
+        ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />'
+        : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />';
+    });
+
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        isOpen = false;
+        mobileMenu.classList.add('hidden');
+        menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />';
+      });
+    });
+
+    const revealElements = document.querySelectorAll('.reveal, .section-fade');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    const skillsData = [
+      { title: "Languages", skills: ["Python", "SQL", "Java", "C"] },
+      { title: "Machine Learning", skills: ["Scikit-learn", "TensorFlow", "PyTorch", "Deep Learning"] },
+      { title: "NLP", skills: ["Text Classification", "TF-IDF", "Summarization", "Speech Recognition"] },
+      { title: "Generative AI", skills: ["LangChain", "Google Gemini", "Prompt Engineering", "Neural Style Transfer"] },
+      { title: "Data Science", skills: ["Pandas", "NumPy", "Matplotlib", "Seaborn"] },
+      { title: "Tools & Deploy", skills: ["Streamlit", "Git", "GitHub", "Jupyter"] }
+    ];
+
+    const skillsContainer = document.getElementById('skills-container');
+    skillsContainer.innerHTML = skillsData.map(cat => `
+      <div>
+        <h3 class="text-lg font-medium mb-4 pb-3 border-b border-black/10">${cat.title}</h3>
+        <ul class="space-y-2">
+          ${cat.skills.map(skill => `
+            <li class="flex items-center gap-3 text-sm text-gray-600 group">
+              <span class="w-1 h-1 bg-black rounded-full group-hover:w-3 transition-all duration-300"></span>
+              ${skill}
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    `).join('');
+
+    // ============ PROJECTS — ALL LINKS GO TO GITHUB ============
+    const projectsData = [
+      { 
+        num: "01",
+        title: "Resume Parser", 
+        cat: "GenAI", 
+        link: "https://github.com/Mohdhilal7/RESUME-PARSER-Using-LangChain-GenAI", 
+        desc: "AI document intelligence system parsing raw resumes into structured JSON using LangChain, Gemini API, and PyPDFLoader with a Streamlit UI.", 
+        tags: ["LangChain", "Gemini", "Streamlit"] 
+      },
+      { 
+        num: "02",
+        title: "Recommendation System", 
+        cat: "ML", 
+        link: "https://github.com/Mohdhilal7/Recommendation-System-using-Machine-Learning", 
+        desc: "Content-based recommendation engine matching users to items using similarity scoring over feature vectors.", 
+        tags: ["Scikit-learn", "Pandas"] 
+      },
+      { 
+        num: "03",
+        title: "CNN Image Classification", 
+        cat: "CV", 
+        link: "https://github.com/Mohdhilal7/CNN-Image-Classification", 
+        desc: "CNN prototyped and trained for image classification, exploring convolutional architectures for accuracy vs. training-time trade-offs.", 
+        tags: ["TensorFlow", "Deep Learning"] 
+      },
+      { 
+        num: "04",
+        title: "Text Summarization Tool", 
+        cat: "NLP", 
+        link: "https://github.com/Mohdhilal7/NLP-Text-Summarization-Tool", 
+        desc: "Text summarization tool with integrated speech recognition application for hands-free input.", 
+        tags: ["NLP", "Speech Recognition"] 
+      },
+      { 
+        num: "05",
+        title: "Generative Text Model", 
+        cat: "GenAI", 
+        link: "https://github.com/Mohdhilal7/GENERATIVE-TEXT-MODEL", 
+        desc: "Deep learning text generation model exploring Generative AI concepts alongside Neural Style Transfer.", 
+        tags: ["Deep Learning", "NLP"] 
+      },
+      { 
+        num: "06",
+        title: "Email Security & Detection", 
+        cat: "Security", 
+        link: "https://github.com/Mohdhilal7/Email-Security-Detection-System", 
+        desc: "End-to-end spam classification system comparing Naive Bayes and SVM algorithms with feature processing in Pandas and NumPy.", 
+        tags: ["Scikit-learn", "Python"] 
+      },
+      { 
+        num: "07",
+        title: "Fake News Detection", 
+        cat: "NLP", 
+        link: "https://github.com/Mohdhilal7/Fake-News-Detection-Machine-Learning-Scam-Detection", 
+        desc: "Text classification model using TF-IDF vectorization and Logistic Regression to detect fraudulent news articles, deployed with Streamlit.", 
+        tags: ["NLP", "TF-IDF", "Logistic Regression"] 
+      }
+    ];
+
+    const projectsContainer = document.getElementById('projects-container');
+    projectsContainer.innerHTML = projectsData.map(proj => `
+      <a href="${proj.link}" target="_blank" rel="noopener noreferrer" class="block group border-b border-black/10 py-8 hover:bg-black/[0.02] transition-colors px-2 -mx-2">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-start gap-6 md:gap-12 flex-1">
+            <span class="text-xs font-mono text-gray-400 mt-1">${proj.num}</span>
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-2">
+                <h3 class="text-xl md:text-2xl font-light group-hover:font-medium transition-all duration-300">${proj.title}</h3>
+                <span class="text-[10px] uppercase tracking-widest text-gray-400 border border-black/10 px-2 py-0.5 rounded-full">${proj.cat}</span>
+              </div>
+              <p class="text-sm text-gray-500 max-w-2xl">${proj.desc}</p>
+              <div class="flex flex-wrap gap-2 mt-3">
+                ${proj.tags.map(tag => `<span class="text-[10px] uppercase tracking-wider text-gray-500">${tag}</span>`).join('<span class="text-gray-300">·</span>')}
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-gray-400 group-hover:text-black transition-colors md:pl-6">
+            <span class="hidden md:inline text-xs uppercase tracking-widest">GitHub</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </div>
+        </div>
+      </a>
+    `).join('');
+
+    const experienceData = [
+      {
+        role: "Machine Learning Intern",
+        company: "CODTECH IT Solutions",
+        location: "Remote",
+        period: "Sep — Oct 2025",
+        points: [
+          "Engineered predictive models using Decision Trees and built sentiment analysis pipelines to extract insights.",
+          "Designed and prototyped a CNN for image classification alongside a content-based recommendation system.",
+          "Deployed interactive Streamlit web interfaces for live model demonstrations."
+        ]
+      },
+      {
+        role: "Artificial Intelligence Intern",
+        company: "CODTECH IT Solutions",
+        location: "Remote",
+        period: "May — Jun 2025",
+        points: [
+          "Developed a text summarization tool and integrated a speech recognition application using advanced NLP.",
+          "Implemented Generative AI concepts, including Neural Style Transfer (NST) and deep learning text generation.",
+          "Collaborated on version-controlled pipelines using Git/GitHub to manage project codebases."
+        ]
+      }
+    ];
+
+    const expContainer = document.getElementById('experience-container');
+    expContainer.innerHTML = experienceData.map((exp, i) => `
+      <div class="grid md:grid-cols-12 gap-6 pb-16 ${i !== experienceData.length - 1 ? 'border-b border-black/5' : ''}">
+        <div class="md:col-span-3">
+          <div class="text-xs font-mono text-gray-400 mb-2">${exp.period}</div>
+          <div class="text-xs uppercase tracking-widest text-gray-500">${exp.location}</div>
+        </div>
+        <div class="md:col-span-9">
+          <h3 class="text-2xl font-light mb-1">${exp.role}</h3>
+          <p class="text-sm text-gray-500 mb-6">${exp.company}</p>
+          <ul class="space-y-3">
+            ${exp.points.map(point => `
+              <li class="flex items-start gap-3 text-sm text-gray-600">
+                <span class="w-1 h-1 bg-black rounded-full mt-2 flex-shrink-0"></span>
+                <span>${point}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      </div>
+    `).join('');
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.classList.add('shadow-sm');
+      } else {
+        navbar.classList.remove('shadow-sm');
+      }
+    });
+
+    // Subtle parallax tilt on hero photo
+    const heroImg = document.querySelector('.grayscale-img');
+    if (heroImg && window.innerWidth > 768) {
+      const wrapper = heroImg.parentElement;
+      wrapper.addEventListener('mousemove', (e) => {
+        const rect = wrapper.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        heroImg.style.transform = `perspective(1000px) rotateY(${x * 4}deg) rotateX(${-y * 4}deg) scale(1.02)`;
+      });
+      wrapper.addEventListener('mouseleave', () => {
+        heroImg.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
+      });
+    }
+  </script>
+</body>
+</html>
